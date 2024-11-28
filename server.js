@@ -24,7 +24,7 @@ app.post('/usuarios', async (req, res) => {
     res.status(201).json(req.body);
 });
 
-// Rota para obter todos os usuários ou filtrar por query
+
 app.get('/usuarios', async (req, res) => {
     let users = [];
 
@@ -48,14 +48,14 @@ app.put('/usuarios/:id', async (req, res) => {
     const { email, name, age } = req.body;
 
     try {
-        // Codificando o nome antes de salvar no banco
+        
         const encodedName = Buffer.from(name).toString('base64');
 
         const updatedUser = await prisma.user.update({
             where: { id: id },
             data: {
                 email: email,
-                name: encodedName,  // Codificando o nome antes de salvar
+                name: encodedName,  
                 age: age,
             },
         });
@@ -68,7 +68,7 @@ app.put('/usuarios/:id', async (req, res) => {
 });
 
 
-// Rota para deletar um usuário
+
 app.delete('/usuarios/:id', async (req, res) => {
     await prisma.user.delete({
         where: {
@@ -79,35 +79,35 @@ app.delete('/usuarios/:id', async (req, res) => {
     res.status(200).json({ message: 'Usuário deletado com sucesso!' });
 });
 
-// Rota de login
+
 app.post('/login', async (req, res) => {
     const { email, name } = req.body;
 
-    // Buscar o usuário pelo email
+    
     const user = await prisma.user.findUnique({
         where: {
             email: email,
         },
     });
 
-    // Se o usuário não for encontrado
+    
     if (!user) {
         return res.status(401).json({ message: 'Usuário não encontrado' });
     }
 
-    // Decodificar o nome do usuário
+    
     const decodedName = Buffer.from(user.name, 'base64').toString('utf-8');
 
-    // Verificar se o nome está correto
+    
     if (decodedName !== name) {
         return res.status(401).json({ message: 'Nome incorreto' });
     }
 
-    // Login bem-sucedido
+    
     res.status(200).json({ message: 'Login bem-sucedido' });
 });
 
-// Inicia o servidor na porta 3000
+
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
 });
