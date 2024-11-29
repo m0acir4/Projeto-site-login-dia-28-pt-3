@@ -77,7 +77,7 @@ app.delete('/usuarios/:id', async (req, res) => {
 app.post('/login', async (req, res) => {
     const { email, name } = req.body;
 
-    // Buscar o usuário pelo email
+    
     const user = await prisma.user.findUnique({
         where: {
             email: email,
